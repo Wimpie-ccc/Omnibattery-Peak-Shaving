@@ -26,9 +26,7 @@ blueprint:
     status_sensor:
       name: Integration Status Sensor
       description: 'Omnibattery integration status sensor. Used to detect that Peak
-        Shaving (Capacity Protection) is active.
-
-        '
+        Shaving (Capacity Protection) is active.'
       default: sensor.omnibattery_integration_status
       selector:
         entity:
@@ -52,7 +50,7 @@ blueprint:
           reorder: false
     capacity_protection_limit:
       name: Capacity Protection Limit
-      description: Omnibattery Capacity Protection Limit number entity, in W.
+      description: 'Omnibattery Capacity Protection Limit number entity, in W.'
       default: number.omnibattery_capacity_protection_limit
       selector:
         entity:
@@ -121,7 +119,7 @@ blueprint:
     charge_target_w:
       name: Grid Target Offset While Recharging
       description: Offset to 'Capacity Protection Limit'. Gives grid power value that Omnibattery will recharge the batteries with.  (eg 2500 - 300 = 2200W recharge power).
-      default: 500
+      default: 300
       selector:
         number:
           min: 0.0
