@@ -38,9 +38,7 @@ blueprint:
     monthly_peak_sensor:
       name: Monthly Peak Sensor
       description: 'Sensor reporting the current monthly peak. Values in kW and W
-        are supported and converted automatically.
-
-        '
+        are supported and converted automatically.'
       selector:
         entity:
           filter:
@@ -61,7 +59,7 @@ blueprint:
           reorder: false
     min_peak_value_number:
       name: Minimum Peak value
-      description: Minimum peak value, if you always have at least the value as month peak.
+      description: 'Minimum peak value, if you always have at least the value as month peak.'
       default: 2500
       selector:
         number:
@@ -72,7 +70,7 @@ blueprint:
           mode: box
     max_peak_offset_value_number:
       name: Max Peak offset value
-      description: Offset to 'Capacity Protection Limit'. Gives peak value that Omnibattery will try not to break.  (eg 2500 - 200 = 2300W max peak).
+      description: "Offset to 'Capacity Protection Limit'. Gives peak value that Omnibattery will try not to break.  (eg 2500 - 200 = 2300W max peak)."
       default: 200
       selector:
         number:
@@ -83,7 +81,7 @@ blueprint:
           mode: box
     target_grid_power_number:
       name: Target Grid Power
-      description: Omnibattery PD Target Grid Power number entity (the offset to move).
+      description: 'Omnibattery PD Target Grid Power number entity (the offset to move).'
       default: number.omnibattery_pd_target_grid_power
       selector:
         entity:
