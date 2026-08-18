@@ -1,0 +1,182 @@
+blueprint:
+  name: Omnibattery - Peak Shaving
+  description: "While Peak Shaving (Capacity Protection) is active and the system
+    SOC drops below a configured floor, this automation moves the PD Target Grid Power
+    to a positive (import) value so the battery recharges from the grid. Once SOC
+    reaches the configured target, the target is restored to its idle value.\nDefault
+    behavior: - SOC below floor while peak shaving is active: set grid target to +500
+    W\n  (import from grid -> battery charges).\n- SOC reaches target, OR peak shaving
+    ends: restore grid target to 0 W.\nThe idle value is only restored when the current
+    target still matches the recharge value, so manual or other-automation changes
+    are left untouched.\n"
+  domain: automation
+  source_url: file:///C:/peak_shaving_blueprint.yaml
+  input:
+    soc_sensor:
+      name: System SOC Sensor
+      description: Omnibattery system SOC sensor.
+      default: sensor.omnibattery_system_soc
+      selector:
+        entity:
+          filter:
+          - domain:
+            - sensor
+          multiple: false
+          reorder: false
+    status_sensor:
+      name: Integration Status Sensor
+      description: 'Omnibattery integration status sensor. Used to detect that Peak
+        Shaving (Capacity Protection) is active.
+
+        '
+      default: sensor.omnibattery_integration_status
+      selector:
+        entity:
+          filter:
+          - domain:
+            - sensor
+          multiple: false
+          reorder: false
+    monthly_peak_sensor:
+      name: Monthly Peak Sensor
+      description: 'Sensor reporting the current monthly peak. Values in kW and W
+        are supported and converted automatically.
+
+        '
+      selector:
+        entity:
+          filter:
+          - domain:
+            - sensor
+          multiple: false
+          reorder: false
+    capacity_protection_limit:
+      name: Capacity Protection Limit
+      description: Omnibattery Capacity Protection Limit number entity, in W.
+      default: number.omnibattery_capacity_protection_limit
+      selector:
+        entity:
+          filter:
+          - domain:
+            - number
+          multiple: false
+          reorder: false
+    target_grid_power_number:
+      name: PD Target Grid Power Number
+      description: Omnibattery PD Target Grid Power number entity (the offset to move).
+      default: number.omnibattery_pd_target_grid_power
+      selector:
+        entity:
+          filter:
+          - domain:
+            - number
+          multiple: false
+          reorder: false
+    soc_floor_pct:
+      name: SOC Floor (start recharge)
+      description: When SOC drops below this value while peak shaving is active, start
+        recharging.
+      default: 20
+      selector:
+        number:
+          min: 5.0
+          max: 100.0
+          step: 1.0
+          unit_of_measurement: '%'
+          mode: box
+    soc_target_pct:
+      name: SOC Target (stop recharge)
+      description: Recharge until SOC reaches this value, then restore the idle target.
+        Set above the floor to avoid oscillation.
+      default: 25
+      selector:
+        number:
+          min: 5.0
+          max: 100.0
+          step: 1.0
+          unit_of_measurement: '%'
+          mode: box
+    charge_target_w:
+      name: Grid Target While Recharging
+      description: Positive values mean import from grid (battery charges). The number
+        entity clamps to its own range.
+      default: 500
+      selector:
+        number:
+          min: 0.0
+          max: 2500.0
+          step: 10.0
+          unit_of_measurement: W
+          mode: box
+    idle_target_w:
+      name: Idle Grid Target
+      description: Value restored once SOC target is reached or peak shaving ends.
+      default: 0
+      selector:
+        number:
+          min: -2500.0
+          max: 2500.0
+          step: 10.0
+          unit_of_measurement: W
+          mode: box
+variables:
+  soc_sensor: !input soc_sensor
+  status_sensor: !input status_sensor
+  target_grid_power_number: !input target_grid_power_number
+  soc_floor_pct: !input soc_floor_pct
+  soc_target_pct: !input soc_target_pct
+  charge_target_w: !input charge_target_w
+  idle_target_w: !input idle_target_w
+  monthly_peak_sensor: !input monthly_peak_sensor
+  capacity_protection_limit: !input capacity_protection_limit
+  peak_states:
+  - peak_shaving
+  - capacity_conserving
+  - capacity_protection_charging
+  - capacity_protection
+trigger:
+- platform: numeric_state
+  entity_id: !input soc_sensor
+  below: !input soc_floor_pct
+  id: low_soc
+- platform: numeric_state
+  entity_id: !input soc_sensor
+  above: !input soc_target_pct
+  id: soc_recovered
+- platform: state
+  entity_id: !input status_sensor
+  id: status_changed
+- platform: homeassistant
+  event: start
+  id: homeassistant_start
+condition: []
+mode: restart
+action:
+- variables:
+    soc_now: '{{ states(soc_sensor) | float(-1) }}'
+    is_peak: '{{ states(status_sensor) in peak_states }}'
+    current_target_w: '{{ states(target_grid_power_number) | float(999999) }}'
+- choose:
+  - conditions:
+    - condition: template
+      value_template: "{{ is_peak\n   and (soc_now | float(-1)) >= 0\n   and (soc_now
+        | float(-1)) < (soc_floor_pct | float(0))\n   and (current_target_w | float(999999))
+        != (charge_target_w | float(0)) }}\n"
+    sequence:
+    - service: number.set_value
+      target:
+        entity_id: !input target_grid_power_number
+      data:
+        value: '{{ charge_target_w | float(0) }}'
+  - conditions:
+    - condition: template
+      value_template: "{{ (current_target_w | float(999999)) == (charge_target_w |
+        float(0))\n   and ( (soc_now | float(-1)) >= (soc_target_pct | float(0))\n
+        \        or not is_peak ) }}\n"
+    sequence:
+    - service: number.set_value
+      target:
+        entity_id: !input target_grid_power_number
+      data:
+        value: '{{ idle_target_w | float(0) }}'
+  default: []
