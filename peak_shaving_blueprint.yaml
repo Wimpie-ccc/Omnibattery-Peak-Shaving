@@ -76,7 +76,7 @@ blueprint:
       name: SOC Floor (start recharge)
       description: When SOC drops below this value while peak shaving is active, start
         recharging.
-      default: 20
+      default: 29
       selector:
         number:
           min: 5.0
@@ -88,7 +88,7 @@ blueprint:
       name: SOC Target (stop recharge)
       description: Recharge until SOC reaches this value, then restore the idle target.
         Set above the floor to avoid oscillation.
-      default: 25
+      default: 30
       selector:
         number:
           min: 5.0
