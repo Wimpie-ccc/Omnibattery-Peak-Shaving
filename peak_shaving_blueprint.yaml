@@ -10,7 +10,7 @@ blueprint:
     target still matches the recharge value, so manual or other-automation changes
     are left untouched.\n"
   domain: automation
-  source_url: file:///C:/peak_shaving_blueprint.yaml
+  source_url: https://github.com/Wimpie-ccc/Omnibattery-Peak-Sheaving/blob/main/peak_shaving_blueprint.yaml
   input:
     soc_sensor:
       name: System SOC Sensor
