@@ -61,6 +61,28 @@ blueprint:
             - number
           multiple: false
           reorder: false
+    min_peak_value_number:
+      name: Minimum Peak value
+      description: Minimum peak value, if you always have at least the value as month peak.
+      default: 2500
+      selector:
+        number:
+          min: 0.0
+          max: 10000.0
+          step: 1.0
+          unit_of_measurement: W
+          mode: box
+    max_peak_offset_value_number:
+      name: Max Peak offset value
+      description: Gives peak value that Omnibattery will try to follow. eg 2500 - 200 = 2300W max peak.
+      default: 200
+      selector:
+        number:
+          min: 0.0
+          max: 1000.0
+          step: 1.0
+          unit_of_measurement: W
+          mode: box
     target_grid_power_number:
       name: PD Target Grid Power Number
       description: Omnibattery PD Target Grid Power number entity (the offset to move).
