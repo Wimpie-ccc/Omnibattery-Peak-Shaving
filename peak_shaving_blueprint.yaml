@@ -63,7 +63,7 @@ blueprint:
           reorder: false
     min_peak_value_number:
       name: Minimum Peak value
-      description: Minimum peak value, if you always have at least the value as month peak.
+      description: Minimum peak value, if you always have at least the value as month peak (eg: 2500W).
       default: 2500
       selector:
         number:
@@ -74,7 +74,7 @@ blueprint:
           mode: box
     max_peak_offset_value_number:
       name: Max Peak offset value
-      description: Gives peak value that Omnibattery will try to follow. eg 2500 - 200 = 2300W max peak.
+      description: Offset to 'Capacity Protection Limit'. Gives peak value that Omnibattery will try not to break.  (eg 2500 - 200 = 2300W max peak).
       default: 200
       selector:
         number:
@@ -84,7 +84,7 @@ blueprint:
           unit_of_measurement: W
           mode: box
     target_grid_power_number:
-      name: PD Target Grid Power Number
+      name: Target Grid Power
       description: Omnibattery PD Target Grid Power number entity (the offset to move).
       default: number.omnibattery_pd_target_grid_power
       selector:
@@ -119,9 +119,8 @@ blueprint:
           unit_of_measurement: '%'
           mode: box
     charge_target_w:
-      name: Grid Target While Recharging
-      description: Positive values mean import from grid (battery charges). The number
-        entity clamps to its own range.
+      name: Grid Target Offset While Recharging
+      description: Offset to 'Capacity Protection Limit'. Gives grid power value that Omnibattery will recharge the batteries with.  (eg 2500 - 300 = 2200W recharge power).
       default: 500
       selector:
         number:
