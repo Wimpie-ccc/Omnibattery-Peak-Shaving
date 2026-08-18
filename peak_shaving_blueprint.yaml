@@ -147,7 +147,6 @@ variables:
   soc_floor_pct: !input soc_floor_pct
   soc_target_pct: !input soc_target_pct
   charge_target_offset_w: !input charge_target_offset_w
-  charge_target_w: !input charge_target_w
   idle_target_w: !input idle_target_w
   peak_states:
   - peak_shaving
