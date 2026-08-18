@@ -114,14 +114,14 @@ blueprint:
           step: 1.0
           unit_of_measurement: '%'
           mode: box
-    charge_target_w:
+    charge_target_offset_w:
       name: Grid Target Offset While Recharging
-      description: "Offset to 'Capacity Protection Limit'. Gives grid power value that Omnibattery will recharge the batteries with.  (eg 2500 - 300 = 2200W recharge power)."
+      description: "Offset to 'Capacity Protection Limit'. Gives grid power value that Omnibattery will recharge the batteries with. (eg 2500 - 300 = 2200W)."
       default: 300
       selector:
         number:
           min: 0.0
-          max: 2500.0
+          max: 1000.0
           step: 10.0
           unit_of_measurement: W
           mode: box
@@ -139,13 +139,16 @@ blueprint:
 variables:
   soc_sensor: !input soc_sensor
   status_sensor: !input status_sensor
+  monthly_peak_sensor: !input monthly_peak_sensor
+  capacity_protection_limit: !input capacity_protection_limit
+  min_peak_value_number: !input min_peak_value_number
+  max_peak_offset_value_number: !input max_peak_offset_value_number
   target_grid_power_number: !input target_grid_power_number
   soc_floor_pct: !input soc_floor_pct
   soc_target_pct: !input soc_target_pct
+  charge_target_offset_w: !input charge_target_offset_w
   charge_target_w: !input charge_target_w
   idle_target_w: !input idle_target_w
-  monthly_peak_sensor: !input monthly_peak_sensor
-  capacity_protection_limit: !input capacity_protection_limit
   peak_states:
   - peak_shaving
   - capacity_conserving
@@ -173,6 +176,7 @@ action:
     soc_now: '{{ states(soc_sensor) | float(-1) }}'
     is_peak: '{{ states(status_sensor) in peak_states }}'
     current_target_w: '{{ states(target_grid_power_number) | float(999999) }}'
+    charge_target_w: '{{ min_peak_value_number | float(999999) }}'
 - choose:
   - conditions:
     - condition: template
