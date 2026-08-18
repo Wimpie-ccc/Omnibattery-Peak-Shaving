@@ -63,7 +63,7 @@ blueprint:
           reorder: false
     min_peak_value_number:
       name: Minimum Peak value
-      description: Minimum peak value, if you always have at least the value as month peak (eg: 2500W).
+      description: Minimum peak value, if you always have at least the value as month peak (eg 2500W).
       default: 2500
       selector:
         number:
