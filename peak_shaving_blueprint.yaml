@@ -59,7 +59,7 @@ blueprint:
           reorder: false
     min_peak_value_number:
       name: Minimum Peak value
-      description: 'Minimum peak value, if you always have at least the value as month peak.'
+      description: 'Minimum peak value, if you always have at least the value as month peak. eg : 2500W'
       default: 2500
       selector:
         number:
@@ -70,7 +70,7 @@ blueprint:
           mode: box
     max_peak_offset_value_number:
       name: Max Peak offset value
-      description: "Offset to 'Capacity Protection Limit'. Gives peak value that Omnibattery will try not to break.  (eg 2500 - 200 = 2300W max peak)."
+      description: "Offset to 'Capacity Protection Limit'. Gives peak value that Omnibattery will try not to break. eg 2500 - 200 = 2300W max peak."
       default: 200
       selector:
         number:
@@ -92,8 +92,8 @@ blueprint:
           reorder: false
     soc_floor_pct:
       name: SOC Floor (start recharge)
-      description: When SOC drops below this value while peak shaving is active, start
-        recharging.
+      description: 'When SOC drops below this value while peak shaving is active, start
+        recharging.'
       default: 29
       selector:
         number:
@@ -104,8 +104,8 @@ blueprint:
           mode: box
     soc_target_pct:
       name: SOC Target (stop recharge)
-      description: Recharge until SOC reaches this value, then restore the idle target.
-        Set above the floor to avoid oscillation.
+      description: "Recharge until SOC reaches this value, then restore the idle target.
+        Set above 'SOC Floor' to avoid oscillation."
       default: 30
       selector:
         number:
@@ -116,7 +116,7 @@ blueprint:
           mode: box
     charge_target_w:
       name: Grid Target Offset While Recharging
-      description: Offset to 'Capacity Protection Limit'. Gives grid power value that Omnibattery will recharge the batteries with.  (eg 2500 - 300 = 2200W recharge power).
+      description: "Offset to 'Capacity Protection Limit'. Gives grid power value that Omnibattery will recharge the batteries with.  (eg 2500 - 300 = 2200W recharge power)."
       default: 300
       selector:
         number:
@@ -127,7 +127,7 @@ blueprint:
           mode: box
     idle_target_w:
       name: Idle Grid Target
-      description: Value restored once SOC target is reached or peak shaving ends.
+      description: 'Value restored once SOC target is reached or peak shaving ends.'
       default: 0
       selector:
         number:
