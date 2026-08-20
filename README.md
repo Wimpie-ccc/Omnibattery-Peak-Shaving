@@ -15,7 +15,7 @@ It has the following features:
 - when peak shaving recharging ends (SOC > SOC Target), it will set the idle grid power setpoint (omnibattery_pd_target_grid_power) to a user 
   adjustable value.
 
-Requirments (beside the things you need to run Omnibattery):
+Requirements (beside the things you need to run Omnibattery):
 - Node-RED
 - a basic understanding how node-RED works
 - peak shaving is enabled in Omnibattery (Control page), and a sane value for "SOC Threshold". I use 32%.
@@ -25,7 +25,8 @@ Import the flow in de usual way.
 
 Usage:
 After import and deploy, nothing will happen. Both HA action nodes are not connected. You will have to connect them 
-so they can recieve messages and control Omnibattery.
+so they can recieve messages and control Omnibattery. But before you connect the HA action nodes, review the settings 
+and deploy the flow. You can follow what this flow would do in the "debug messages" window.
 
 Settings can be found in the settings group. Some are the same as those found in the 2 blueprints I used as inspiration.
 - Monthly Peak Offset: Contains an offset value, relative to the P1 meter current month peak. This offset ensures that 
