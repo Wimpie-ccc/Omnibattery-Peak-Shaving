@@ -1,4 +1,4 @@
-# Omnibattery-Peak-Sheaving
+# Omnibattery-Peak-Shaving
 This flow is a rewrite of 2 blueprints for Omnibattery: "Peak shaving limit sync" and "Peak shaving recharge to SOC".
 It has the following features:
 - automatically adjust "peak limit" (omnibattery_capacity_protection_limit) with the new value if you went 
