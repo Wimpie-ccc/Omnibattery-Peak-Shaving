@@ -1,4 +1,6 @@
 # Omnibattery-Peak-Sheaving
+Fist of all a legal message: Use at own risk, no warranty what so ever. Not even warranty that this works!
+
 This flow is a rewrite of 2 blueprints for Omnibattery: "Peak shaving limit sync" and "Peak shaving recharge to SOC".
 It has the following features:
 - automatically adjust "peak limit" (omnibattery_capacity_protection_limit) with the new value if you went 
@@ -10,7 +12,7 @@ It has the following features:
 - possibility to use an offset relative to the current P1 monthly peak for recharging the battery while peak shaving 
   is active. eg: your current P1 monthly peak is 3000W, with an offset of 300W, Omnibattery will try to recharge 
   the battery while never exceding a grid power draw of 2700W.
-- when peak shaving ends, it will set the idle grid power setpoint (omnibattery_pd_target_grid_power) to a user 
+- when peak shaving recharging ends (SOC > SOC Target), it will set the idle grid power setpoint (omnibattery_pd_target_grid_power) to a user 
   adjustable value.
 
 Requirments (beside the things you need to run Omnibattery):
@@ -52,7 +54,7 @@ Now a big power user is switched on, it uses 4000W. Omnibattery will increase th
 P1 grid meter at 0W. The SOC (State of Charge) falls quickly, 49%...45%...40%...36%...33%.
 
 When the SOC reaches 32%, the "SOC Threshold", peak shaving starts. This means that Omnibattery will try to conserve 
-energy (battery charge) just to make sure the monthly peak won't increase (and you have to pay more peak tarief).
+energy (battery charge) just to make sure the monthly peak won't increase (and you have to pay more peak tarif).
 
 Omnibattery will not try to regulate 0W on the P1 grid meter, but 2800W (3000-200, "P1 peak" - "Monthly Peak Offset"). 
 The SOC keeps falling, but not as quickly as before. Omnibattery now discharges the battery at 1700W, much lower than 
@@ -70,7 +72,7 @@ Omnibattery will draw 2700W from the grid (3000-300, "P1 peak" - "Charge Grid Of
 because we are charging the battery at 2200W (2700-500). SOC is 23%...26%...29%. 
 
 At 30% SOC, SOC Target, charging of the battery will be stopped. Peak shaving is still active, so grid power draw is 
-not 0W, but 500W (what the home uses).
+not 0W, but 500W (what the home uses). Omnibattery tries to conserve energy (battery charge).
 
 Now the big power user is switched on again. Omnibattery discharges the battery again at 1700W to keep the power draw 
 from the grid at 2800W. SOC falls 27%...20%..15%...13%.
@@ -91,7 +93,9 @@ When the big power user is switched off, the battery will be recharged again to 
 
 help at:
 
+
 Install Node-RED in HA: https://community.home-assistant.io/t/home-assistant-community-add-on-node-red/55023
+
 
 Node-RED essentials : https://www.youtube.com/watch?v=ksGeUD26Mw0&list=PLyNBB9VCLmo1hyO-4fIZ08gqFcXBkHy-6
 
