@@ -1,5 +1,5 @@
 # Omnibattery-Peak-Sheaving
-Fist of all a legal message: Use at own risk, no warranty what so ever. Not even warranty that this works!
+First of all a legal message: Use at own risk, no warranty what so ever. Not even warranty that this works!
 
 This flow is a rewrite of 2 blueprints for Omnibattery: "Peak shaving limit sync" and "Peak shaving recharge to SOC".
 It has the following features:
