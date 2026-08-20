@@ -88,7 +88,10 @@ When the big power user is switched off, the battery will be recharged again to 
 
 
 
+
 help at:
+
 Install Node-RED in HA: https://community.home-assistant.io/t/home-assistant-community-add-on-node-red/55023
+
 Node-RED essentials : https://www.youtube.com/watch?v=ksGeUD26Mw0&list=PLyNBB9VCLmo1hyO-4fIZ08gqFcXBkHy-6
 
